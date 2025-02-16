@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User List</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" th:href="@{/css/styles.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+        td form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        td input[type="text"], td input[type="email"] {
+            width: auto;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User List</h1>
+
+    <!-- Form for adding a new user -->
+    <form action="#" th:action="@{/users}" th:object="${userDto}" method="post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" />
+        </div>
+        <button type="submit">Add User</button>
+    </form>
+
+    <!-- Table to display users -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">ID</td>
+            <td th:text="${user.name}">Name</td>
+            <td th:text="${user.email}">Email</td>
+            <td>
+                <!-- Form for updating a user -->
+                <form th:action="@{/users}" method="post">
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <input type="hidden" name="_method" value="put" />
+                    <input type="text" name="name" th:value="${user.name}" placeholder="New Name" />
+                    <input type="email" name="email" th:value="${user.email}" placeholder="New Email" />
+                    <button type="submit">Update</button>
+                </form>
+                <!-- Form for deleting a user -->
+                <form th:action="@{/users}" method="post">
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
