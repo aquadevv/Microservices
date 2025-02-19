@@ -1,16 +1,20 @@
 package ru.itmentor.spring.boot_security.demo.controller.admin;
-
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.itmentor.spring.boot_security.demo.dto.UserDto;
+import ru.itmentor.spring.boot_security.demo.dto.UserResponse;
+
+import java.util.List;
 
 public interface AdminController {
-    String getAllUsers(Model model);
+    List<UserResponse> getAllUsers();
 
-    String addUser(@ModelAttribute("userDto") UserDto userDto);
+    UserResponse getUserById(@PathVariable Long id);
 
-    String deleteUser(@RequestParam("id") Long userId);
+    UserResponse addUser(@RequestBody UserDto userDto);
 
-    String updateUser(@RequestParam("id") Long userId, @ModelAttribute("user") UserDto userDto);
+    void deleteUser(@PathVariable Long id);
+
+    UserResponse updateUser(@PathVariable Long id, @RequestBody UserDto userDetails);
 }

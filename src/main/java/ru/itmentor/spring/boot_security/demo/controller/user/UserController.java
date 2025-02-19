@@ -1,7 +1,7 @@
 package ru.itmentor.spring.boot_security.demo.controller.user;
 
-import org.springframework.ui.Model;
+import ru.itmentor.spring.boot_security.demo.dto.UserResponse;
 
 public interface UserController {
-    String getInformationUser(Model model);
+    UserResponse getInformationUser();
 }

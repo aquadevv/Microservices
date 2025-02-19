@@ -1,48 +1,53 @@
 package ru.itmentor.spring.boot_security.demo.controller.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmentor.spring.boot_security.demo.dto.UserDto;
-import ru.itmentor.spring.boot_security.demo.service.UserService;
+import ru.itmentor.spring.boot_security.demo.dto.UserResponse;
+import ru.itmentor.spring.boot_security.demo.service.admin.AdminService;
+
+import java.util.List;
 
 
-@Controller
-@RequestMapping("/admin")
+@RestController
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminControllerImpl implements AdminController {
+    private final AdminService adminService;
 
-    private final UserService userService;
-
-    private static final String REDIRECT_URL = "redirect:/admin";
-
+    @Override
     @GetMapping
-    @Override
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("userDto", new UserDto());
-        return "admin";
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> getAllUsers() {
+        return adminService.getAllUsers();
     }
 
+    @Override
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse getUserById(@PathVariable Long id) {
+        return adminService.getUserById(id);
+    }
+
+    @Override
     @PostMapping
-    @Override
-    public String addUser(@ModelAttribute("userDto") UserDto userDto) {
-        userService.createUser(userDto);
-        return REDIRECT_URL;
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse addUser(@RequestBody UserDto userDto) {
+        return adminService.createUser(userDto);
     }
 
-    @DeleteMapping
     @Override
-    public String deleteUser(@RequestParam("id") Long userId) {
-        userService.deleteUser(userId);
-        return REDIRECT_URL;
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id) {
+        adminService.deleteUser(id);
     }
 
-    @PutMapping
     @Override
-    public String updateUser(@RequestParam("id") Long userId, @ModelAttribute("user") UserDto userDto) {
-        userService.updateUser(userId, userDto);
-        return REDIRECT_URL;
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return adminService.updateUser(id, userDto);
     }
 }

@@ -1,24 +1,24 @@
 package ru.itmentor.spring.boot_security.demo.controller.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.itmentor.spring.boot_security.demo.model.User;
-import ru.itmentor.spring.boot_security.demo.service.UserService;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import ru.itmentor.spring.boot_security.demo.dto.UserResponse;
+import ru.itmentor.spring.boot_security.demo.service.user.UserService;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserControllerImpl implements UserController {
     private final UserService userService;
 
     @Override
     @GetMapping
-    public String getInformationUser(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
-        return "user-profile";
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse getInformationUser() {
+        return userService.getCurrentUser();
     }
 }
