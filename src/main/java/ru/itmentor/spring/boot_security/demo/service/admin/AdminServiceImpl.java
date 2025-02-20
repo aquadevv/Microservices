@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmentor.spring.boot_security.demo.dto.UserDto;
@@ -20,6 +21,7 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserResponse> getAllUsers() {
@@ -39,6 +41,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public UserResponse createUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(user);
         return userMapper.toDto(user);
     }
@@ -48,6 +51,7 @@ public class AdminServiceImpl implements AdminService {
     public UserResponse updateUser(Long userId, UserDto userDto) {
         findUserById(userId);
         User user = userMapper.toEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setId(userId);
         userRepository.save(user);
         return userMapper.toDto(user);
