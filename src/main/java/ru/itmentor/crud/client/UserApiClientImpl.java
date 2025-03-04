@@ -42,7 +42,7 @@ public class UserApiClientImpl implements UserApiClient {
     public String updateUser(User user) {
         HttpEntity<User> request = new HttpEntity<>(user, buildHeaders());
         ResponseEntity<String> response = restTemplate.exchange(
-                baseUrl + "/" + user.getId(),
+                baseUrl,
                 HttpMethod.PUT,
                 request,
                 String.class
