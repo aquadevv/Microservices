@@ -3,8 +3,9 @@ package ru.itmentor.spring.boot_security.demo.controller.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.itmentor.spring.boot_security.demo.dto.UserDto;
+import ru.itmentor.spring.boot_security.demo.dto.UserCreateDto;
 import ru.itmentor.spring.boot_security.demo.dto.UserResponse;
+import ru.itmentor.spring.boot_security.demo.dto.UserUpdateDto;
 import ru.itmentor.spring.boot_security.demo.service.admin.AdminService;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class AdminControllerImpl implements AdminController {
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse addUser(@RequestBody UserDto userDto) {
+    public UserResponse addUser(@RequestBody UserCreateDto userDto) {
         return adminService.createUser(userDto);
     }
 
@@ -47,7 +48,7 @@ public class AdminControllerImpl implements AdminController {
     @Override
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserUpdateDto userDto) {
         return adminService.updateUser(id, userDto);
     }
 }
